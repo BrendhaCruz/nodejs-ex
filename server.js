@@ -2,6 +2,11 @@
 var express = require('express'),
     app     = express(),
     morgan  = require('morgan');
+var fs       = require('fs');
+var mongo    = require('mongodb');
+var ObjectId = require('mongodb').ObjectID;
+var url 	   = require('url');
+var mdb      = require('./models/mongo');
     
 Object.assign=require('object-assign')
 
@@ -89,6 +94,7 @@ app.get('/pagecount', function (req, res) {
   }
 });
 
+
 // error handling
 app.use(function(err, req, res, next){
   console.error(err.stack);
@@ -103,3 +109,12 @@ app.listen(port, ip);
 console.log('Server running on http://%s:%s', ip, port);
 
 module.exports = app ;
+
+// Custom modules
+app.use('/user',    require('./models/user'));
+app.use('/poetry',  require('./models/poetry'));
+app.use('/comment', require('./models/comment'))
+app.use('/like',    require('./models/like'));
+app.use('/notif',   require('./models/notif'));
+app.use('/follow',  require('./models/follow'));
+app.use('/share',  require('./models/share'));
