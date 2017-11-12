@@ -3,7 +3,6 @@ var mongo = require('mongodb');
 module.exports.init = function(callback) {
 	new mongo.Db('verso', new mongo.Server(process.env.OPENSHIFT_MONGODB_DB_HOST || "localhost", process.env.OPENSHIFT_MONGODB_DB_PORT || 27017, {auto_reconnect: false, poolSize: 4}), {w:0, native_parser: false}).open(function(err, client) {
 		if (!err) {
-		
 				if (err) {
 					callback(err);
 				} else {

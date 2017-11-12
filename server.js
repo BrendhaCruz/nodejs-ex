@@ -37,7 +37,8 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
 
   }
 }
-var db = null,
+
+var db = require('./models/mongo'),
     dbDetails = new Object();
 
 var initDb = function(callback) {
@@ -59,7 +60,17 @@ var initDb = function(callback) {
 
     console.log('Connected to MongoDB at: %s', mongoURL);
   });
+
+    // Custom modules
+    app.use('/user',    require('./models/user'));
+    app.use('/poetry',  require('./models/poetry'));
+    app.use('/comment', require('./models/comment'))
+    app.use('/like',    require('./models/like'));
+    app.use('/notif',   require('./models/notif'));
+    app.use('/follow',  require('./models/follow'));
+    app.use('/share',  require('./models/share'));
 };
+
 
 app.get('/', function (req, res) {
   // try to initialize the db on every request if it's not already
@@ -110,11 +121,4 @@ console.log('Server running on http://%s:%s', ip, port);
 
 module.exports = app ;
 
-// Custom modules
-app.use('/user',    require('./models/user'));
-app.use('/poetry',  require('./models/poetry'));
-app.use('/comment', require('./models/comment'))
-app.use('/like',    require('./models/like'));
-app.use('/notif',   require('./models/notif'));
-app.use('/follow',  require('./models/follow'));
-app.use('/share',  require('./models/share'));
+
