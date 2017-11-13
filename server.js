@@ -6,7 +6,7 @@ var fs       = require('fs');
 var mongo    = require('mongodb');
 var ObjectId = require('mongodb').ObjectID;
 var url 	   = require('url');
-//var mdb      = require('./models/mongo');
+var mdb      = require('./models/mongo');
 
 Object.assign=require('object-assign')
 
@@ -37,8 +37,20 @@ var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
 
         }
     }
-var db = require('./models/mongo');
-//dbDetails = new Object();
+
+
+/*  ================================================================  */
+    /*  App server functions (main app logic here).                       */
+    /*  ================================================================  */
+	mdb.init(function (err) {
+		if (err) {
+			throw err;
+		}
+	});
+
+
+var db = null,
+    dbDetails = new Object();
 
 var initDb = function(callback) {
     if (mongoURL == null) return;
@@ -59,6 +71,16 @@ var initDb = function(callback) {
 
         console.log('Connected to MongoDB at: %s', mongoURL);
     });
+
+        // Custom modules
+    app.use('/user',    require('./models/user'));
+    app.use('/poetry',  require('./models/poetry'));
+    app.use('/comment', require('./models/comment'))
+    app.use('/like',    require('./models/like'));
+    app.use('/notif',   require('./models/notif'));
+    app.use('/follow',  require('./models/follow'));
+    app.use('/share',  require('./models/share'));
+
 };
 
 app.get('/', function (req, res) {
@@ -110,11 +132,3 @@ console.log('Server running on http://%s:%s', ip, port);
 
 module.exports = app ;
 
-// Custom modules
-app.use('/user',    require('./models/user'));
-app.use('/poetry',  require('./models/poetry'));
-app.use('/comment', require('./models/comment'))
-app.use('/like',    require('./models/like'));
-app.use('/notif',   require('./models/notif'));
-app.use('/follow',  require('./models/follow'));
-app.use('/share',  require('./models/share'));
