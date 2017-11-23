@@ -2,7 +2,7 @@ var mongo = require('mongodb');
 
 module.exports.init = function(callback) {
 	new mongo.Db('nodejs-ex', new mongo.Server(process.env.OPENSHIFT_MONGODB_DB_HOST || "localhost", 
-	process.env.OPENSHIFT_MONGODB_DB_PORT || 8080, {auto_reconnect: false, poolSize: 4}), 
+	process.env.OPENSHIFT_MONGODB_DB_PORT || "21017", {auto_reconnect: false, poolSize: 4}),
 	{w:0, native_parser: false}).open(function(err, client) {
 		if (!err) {
 			
