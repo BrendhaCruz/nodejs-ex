@@ -15,7 +15,7 @@
     "object-assign": "4.1.0"
   },
   "engines": {
-    "node": "9.2.0",
+    "node": "9.2.0"
   },
   "scripts": {
     "start": "node server.js",
