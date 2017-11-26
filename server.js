@@ -18,6 +18,9 @@ var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
     mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL,
     mongoURLLabel = "";
 
+port = 3000 || process.env.PORT;
+mongoURL = 'mongodb://brunabarbosa:brunaolib13@ds147681.mlab.com:47681/todo_app_brunabarbosa';
+
 // console.log("####################################################");
 // console.log(">>> ", mongoURL);
 // console.log(">>> ", process.env.DATABASE_SERVICE_NAME);
@@ -136,4 +139,3 @@ app.listen(port, ip);
 console.log('Server running on http://%s:%s', ip, port);
 
 module.exports = app ;
-
