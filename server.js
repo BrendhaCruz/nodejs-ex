@@ -2,8 +2,10 @@
 var express = require('express'),
     app     = express(),
     morgan  = require('morgan');
+   // utils   = require('./utils');
 //var mongo = require('mongodb');
 //var ObjectId = require('mongodb').ObjectID;
+var utils   = require('./models/utils');
 
 Object.assign=require('object-assign')
 
@@ -91,6 +93,84 @@ app.get('/pagecount', function (req, res) {
         res.send('{ pageCount: -1 }');
     }
 });
+
+// Create a new user
+app.post('/post', function(req, res) {
+    // try to initialize the db on every request if it's not already
+    // initialized.
+    if (!db) {
+        initDb(function(err){});
+    }
+    if (db) {
+        res.setHeader('Content-Type', 'application/json; charset=utf-8');
+        var email    = req.body.email;
+        var date	 = req.body.date;
+        var password = req.body.password;
+        var name     = req.body.name;
+        // Find user with same email
+        db.user.findOne({ "email" : email }, function(err, data) {
+            if (err) {
+                res.send(utils.getError(err));
+            } else {
+                if (data) { 
+                    res.send(utils.getError("Usuário já cadastrado."));
+                } else {
+                    // OK. There's no user with given username
+                    var doc = {
+                        "email"    : email,
+                        "date"	   : date, 
+                        "password" : password,
+                        "name"     : name,
+                        "enable_notifications" : true
+                    };
+                    db.user.insert(doc, function(err) {
+                        if (err) {
+                            res.send(utils.getError(err));
+                        } else {
+                            res.send(utils.getSuccess({ "id" : doc.email }));
+                        }
+                    });
+                }
+            }
+        });
+    }
+});
+
+
+// Users
+	// Authenticate in the application
+	app.get('/get', function(req, res) {
+        if (!db) {
+            initDb(function(err){});
+        }
+        if (db) {
+            res.setHeader('Content-Type', 'application/json; charset=utf-8');
+            var email    = req.query.email;
+            var password = req.query.password;
+            var regid    = req.query.regid;
+            // Find user matching username and password
+            var data;
+            if (password) {
+                data = { "email" : email, "password" : password };
+            } else {
+                data = { "email" : email }; 
+            }
+            db.user.findOne(data, function(err, doc) {
+                if (err) {
+                    db.collection('user', function(err, collection){
+                        res.send(utils.getError(err));
+                    });
+                }else {
+                        res.send(utils.getError("Usuário ou senha inválidos."));
+                }
+            });
+        }
+          
+    });
+    
+
+
+
 
 // error handling
 app.use(function(err, req, res, next){
