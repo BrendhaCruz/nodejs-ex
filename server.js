@@ -102,7 +102,7 @@ app.post('/post', function(req, res) {
         initDb(function(err){});
     }
     if (db) {
-        res.setHeader('Content-Type', 'application/json; charset=utf-8');
+        //res.setHeader('Content-Type', 'application/json; charset=utf-8');
         var email    = req.body.email;
         var date	 = req.body.date;
         var password = req.body.password;
