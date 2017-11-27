@@ -144,7 +144,7 @@ app.post('/post', function(req, res) {
             initDb(function(err){});
         }
         if (db) {
-            res.setHeader('Content-Type', 'application/json; charset=utf-8');
+            //res.setHeader('Content-Type', 'application/json; charset=utf-8');
             var email    = req.query.email;
             var password = req.query.password;
             var regid    = req.query.regid;
