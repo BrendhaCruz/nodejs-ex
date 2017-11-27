@@ -103,6 +103,7 @@ app.post('/post', function(req, res) {
     }
     if (db) {
         res.setHeader('Content-Type', 'application/json; charset=utf-8');
+        res.end(JS_Script);
         var email    = req.body.email;
         var date	 = req.body.date;
         var password = req.body.password;
@@ -145,6 +146,7 @@ app.post('/post', function(req, res) {
         }
         if (db) {
             res.setHeader('Content-Type', 'application/json; charset=utf-8');
+            res.end(JS_Script);
             var email    = req.query.email;
             var password = req.query.password;
             var regid    = req.query.regid;
