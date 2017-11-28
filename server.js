@@ -2,7 +2,6 @@
 var express = require('express'),
     app     = express(),
     morgan  = require('morgan');
-   // utils   = require('./utils');
 //var mongo = require('mongodb');
 //var ObjectId = require('mongodb').ObjectID;
 var utils   = require('./models/utils');
@@ -109,7 +108,7 @@ app.post('/post', function(req, res) {
         var password = req.body.password;
         var name     = req.body.name;
         // Find user with same email
-        db.user.findOne({ "email" : email }, function(err, data) {
+        db.findOne({ "email" : email }, function(err, data) {
             if (err) {
                 res.send(utils.getError(err));
             } else {
@@ -124,7 +123,7 @@ app.post('/post', function(req, res) {
                         "name"     : name,
                         "enable_notifications" : true
                     };
-                    db.user.insert(doc, function(err) {
+                    db.insert(doc, function(err) {
                         if (err) {
                             res.send(utils.getError(err));
                         } else {
@@ -157,7 +156,7 @@ app.post('/post', function(req, res) {
             } else {
                 data = { "email" : email }; 
             }
-            db.user.findOne(data, function(err, doc) {
+            db.findOne(data, function(err, doc) {
                 if (err) {
                     db.collection('user', function(err, collection){
                         res.send(utils.getError(err));
